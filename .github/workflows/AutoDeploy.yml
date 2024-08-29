@@ -38,22 +38,22 @@ jobs:
           path: node_modules
           key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
 
-      - name: 安装插件
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
-        run: |
-          npm install
+    #   - name: 安装插件
+    #     if: steps.cache-dependencies.outputs.cache-hit != 'true'
+    #     run: |
+    #       npm install
 
-      - run: npm run get:trending
-      - run: npm run get:repos
-      - run: npm run get:users
-      - run: npm run get:users:china
-      - run: cat .cache/users.json
-      - run: cat .cache/users.china.json
-      - run: npm run get:users:info
+    #   - run: npm run get:trending
+    #   - run: npm run get:repos
+    #   - run: npm run get:users
+    #   - run: npm run get:users:china
+    #   - run: cat .cache/users.json
+    #   - run: cat .cache/users.china.json
+    #   - run: npm run get:users:info
 
-      - run: npm run start
-      - run: mkdir -p web/data
-      - run: cp -rf dist/* web/data
+    #   - run: npm run start
+    #   - run: mkdir -p web/data
+    #   - run: cp -rf dist/* web/data
 
       - name: 部署
         run: |
