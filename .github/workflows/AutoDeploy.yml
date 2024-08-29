@@ -65,6 +65,8 @@ jobs:
 
           cd ./web
           git init
+          git config user.name "${{secrets.GIT_NAME}}"
+          git config user.email "${{secrets.GIT_EMAIL}}"
           git add .
           git commit -m "Auto updated at `date +'%Y-%m-%d %H:%M:%S'`"
           git push --force  --quiet "${{secrets.MYECS_DEPLOY_ADD}}" master:master
