@@ -9,7 +9,7 @@ on:
   #   - cron:  '30 5,17 * * *'
   schedule:
   # 每整点隔两小时 触发工作流程
-    - cron: '0 */2 * * *'
+    - cron: '0 */3 * * *'
     # 0 */2 * * *：这个表达式的意思是：
     # 0：表示在每个小时的第 0 分钟触发（即整点）。
     # */2：表示每 2 小时触发一次。
@@ -31,8 +31,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
       - name: 缓存
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         id: cache-dependencies
         with:
           path: node_modules
