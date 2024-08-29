@@ -61,7 +61,7 @@ jobs:
           echo "${{ secrets.MYECS_DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
+          ssh-keyscan -p "${{ secrets.MYECS_ADD_PORT }}" "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
 
           cd ./src
           git init
@@ -69,4 +69,4 @@ jobs:
           git config user.email "${{secrets.GIT_EMAIL}}"
           git add .
           git commit -m "Auto updated at `date +'%Y-%m-%d %H:%M:%S'`"
-          git push --force  --quiet "${{secrets.MYECS_DEPLOY_ADD}}" master:master
+          git push --force --quiet "${{secrets.MYECS_DEPLOY_ADD}}" master:master
