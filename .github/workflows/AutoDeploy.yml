@@ -62,6 +62,7 @@ jobs:
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -p "${{ secrets.MYECS_ADD_PORT }}" "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
+          ssh-keygen -y -f ~/.ssh/id_rsa
 
           cd ./src
           git init
