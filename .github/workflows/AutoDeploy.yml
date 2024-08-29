@@ -1,0 +1,63 @@
+name: Build & Deploy
+on:
+  push:
+    branches:
+      - master
+
+  # schedule:
+  #   # 每天 5:30 和 17:30 UTC 触发工作流程
+  #   - cron:  '30 5,17 * * *'
+  schedule:
+  # 每整点隔两小时 触发工作流程
+    - cron: '0 */2 * * *'
+    # 0 */2 * * *：这个表达式的意思是：
+    # 0：表示在每个小时的第 0 分钟触发（即整点）。
+    # */2：表示每 2 小时触发一次。
+    # *：表示每天的每一天。
+    # *：表示每个月的每一天。
+    # *：表示每年的每一天。
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 缓存
+        uses: actions/cache@v1
+        id: cache-dependencies
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
+
+      - name: 安装插件
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: |
+          npm install
+
+      - run: npm run get:trending
+      - run: npm run get:repos
+      - run: npm run get:users
+      - run: npm run get:users:china
+      - run: cat .cache/users.json
+      - run: cat .cache/users.china.json
+      - run: npm run get:users:info
+
+      - run: npm run start
+      - run: mkdir -p web/data
+      - run: cp -rf dist/* web/data
+
+      - name: 部署
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.MYECS_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 700 ~/.ssh
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
+
+          cd ./web
+          git init
+          git add .
+          git commit -m "Auto updated at `date +'%Y-%m-%d %H:%M:%S'`"
+          git push --force  --quiet "${{secrets.MYECS_DEPLOY_ADD}}" master:master

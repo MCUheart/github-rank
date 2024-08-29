@@ -1,0 +1,145 @@
+[
+  {
+    "full_name": "s0md3v/roop",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "one-click face swap",
+    "forked": "6577",
+    "stargazers_count": 27073,
+    "todayStar": "923 stars this week",
+    "html_url": "https://github.com/s0md3v/roop",
+    "rank": 1
+  },
+  {
+    "full_name": "amnezia-vpn/amnezia-client",
+    "language": "C++",
+    "color": "#f34b7d",
+    "description": "Amnezia VPN Client (Desktop+Mobile)",
+    "forked": "250",
+    "stargazers_count": 3429,
+    "todayStar": "808 stars this week",
+    "html_url": "https://github.com/amnezia-vpn/amnezia-client",
+    "rank": 2
+  },
+  {
+    "full_name": "OpenBB-finance/OpenBB",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "Investment Research for Everyone, Everywhere.",
+    "forked": "2754",
+    "stargazers_count": 29386,
+    "todayStar": "972 stars this week",
+    "html_url": "https://github.com/OpenBB-finance/OpenBB",
+    "rank": 3
+  },
+  {
+    "full_name": "toss/es-toolkit",
+    "language": "TypeScript",
+    "color": "#3178c6",
+    "description": "A modern JavaScript utility library that's 2-3 times faster and up to 97% smaller—a major upgrade to lodash.",
+    "forked": "240",
+    "stargazers_count": 6002,
+    "todayStar": "1155 stars this week",
+    "html_url": "https://github.com/toss/es-toolkit",
+    "rank": 4
+  },
+  {
+    "full_name": "astral-sh/uv",
+    "language": "Rust",
+    "color": "#dea584",
+    "description": "An extremely fast Python package and project manager, written in Rust.",
+    "forked": "530",
+    "stargazers_count": 18236,
+    "todayStar": "2117 stars this week",
+    "html_url": "https://github.com/astral-sh/uv",
+    "rank": 5
+  },
+  {
+    "full_name": "goauthentik/authentik",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "The authentication glue you need.",
+    "forked": "829",
+    "stargazers_count": 12161,
+    "todayStar": "1334 stars this week",
+    "html_url": "https://github.com/goauthentik/authentik",
+    "rank": 6
+  },
+  {
+    "full_name": "midday-ai/midday",
+    "language": "TypeScript",
+    "color": "#3178c6",
+    "description": "Run your business smarter 🪄",
+    "forked": "361",
+    "stargazers_count": 4136,
+    "todayStar": "565 stars this week",
+    "html_url": "https://github.com/midday-ai/midday",
+    "rank": 7
+  },
+  {
+    "full_name": "lllyasviel/stable-diffusion-webui-forge",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "",
+    "forked": "664",
+    "stargazers_count": 6765,
+    "todayStar": "301 stars this week",
+    "html_url": "https://github.com/lllyasviel/stable-diffusion-webui-forge",
+    "rank": 8
+  },
+  {
+    "full_name": "nikitabobko/AeroSpace",
+    "language": "Swift",
+    "color": "#F05138",
+    "description": "AeroSpace is an i3-like tiling window manager for macOS",
+    "forked": "76",
+    "stargazers_count": 5006,
+    "todayStar": "328 stars this week",
+    "html_url": "https://github.com/nikitabobko/AeroSpace",
+    "rank": 9
+  },
+  {
+    "full_name": "princeton-nlp/SWE-agent",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "SWE-agent takes a GitHub issue and tries to automatically fix it, using GPT-4, or your LM of choice. It solves 12.47% of bugs in the SWE-bench evaluation set and takes just 1 minute to run.",
+    "forked": "1282",
+    "stargazers_count": 13159,
+    "todayStar": "322 stars this week",
+    "html_url": "https://github.com/princeton-nlp/SWE-agent",
+    "rank": 10
+  },
+  {
+    "full_name": "sherlock-project/sherlock",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "Hunt down social media accounts by username across social networks",
+    "forked": "6562",
+    "stargazers_count": 55214,
+    "todayStar": "1307 stars this week",
+    "html_url": "https://github.com/sherlock-project/sherlock",
+    "rank": 11
+  },
+  {
+    "full_name": "openai/whisper",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "Robust Speech Recognition via Large-Scale Weak Supervision",
+    "forked": "7858",
+    "stargazers_count": 66680,
+    "todayStar": "432 stars this week",
+    "html_url": "https://github.com/openai/whisper",
+    "rank": 12
+  },
+  {
+    "full_name": "deepset-ai/haystack",
+    "language": "Python",
+    "color": "#3572A5",
+    "description": "🔍 LLM orchestration framework to build customizable, production-ready LLM applications. Connect components (models, vector DBs, file converters) to pipelines or agents that can interact with your data. With advanced retrieval methods, it's best suited for building RAG, question answering, semantic search or conversational agent chatbots.",
+    "forked": "1792",
+    "stargazers_count": 15934,
+    "todayStar": "713 stars this week",
+    "html_url": "https://github.com/deepset-ai/haystack",
+    "rank": 13
+  }
+]
