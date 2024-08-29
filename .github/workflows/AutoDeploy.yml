@@ -36,17 +36,24 @@ jobs:
           node-version: 20
           registry-url: 'https://registry.npmjs.org'
 
-      - name: 缓存
-        uses: actions/cache@v4
-        id: cache-dependencies
-        with:
-          path: node_modules
-          key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
+      - run: npm install
 
-      - name: 安装插件
-        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+      - name: Modify Version(Date)
+        shell: bash
         run: |
-          npm install
+          node -e 'var pkg = require("./package.json"); pkg.version= (new Date().getFullYear().toString().substr(2)) + "." + (new Date().getMonth() + 1) + "." + (new Date().getDate()); require("fs").writeFileSync("./package.json", JSON.stringify(pkg, null, 2))'
+
+    #   - name: 缓存
+    #     uses: actions/cache@v4
+    #     id: cache-dependencies
+    #     with:
+    #       path: node_modules
+    #       key: ${{runner.OS}}-${{hashFiles('**/package-lock.json')}}
+
+    #   - name: 安装插件
+    #     if: steps.cache-dependencies.outputs.cache-hit != 'true'
+    #     run: |
+    #       npm install
 
       - run: npm run get:trending
       - run: npm run get:repos
