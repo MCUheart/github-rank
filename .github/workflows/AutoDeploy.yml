@@ -66,8 +66,7 @@ jobs:
           echo "${{ secrets.MYECS_DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -p "${{ secrets.MYECS_ADD_PORT }}" "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
-          echo "${{ secrets.MYECS_DEPLOY_KEY }}" | head -n 10
+          ssh-keyscan -t rsa -p "${{ secrets.MYECS_ADD_PORT }}" "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
 
           cd ./src
           git init
