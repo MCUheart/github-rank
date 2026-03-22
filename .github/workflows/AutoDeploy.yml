@@ -81,4 +81,4 @@ jobs:
           git config user.email "${{secrets.GIT_EMAIL}}"
           git add .
           git commit -m "Auto updated at `date +'%Y-%m-%d %H:%M:%S'`"
-          git push --force "${{secrets.MYECS_DEPLOY_ADD}}" master:master
+          GIT_SSH_COMMAND="ssh -v" git push --force "${{secrets.MYECS_DEPLOY_ADD}}" master:master
