@@ -67,18 +67,35 @@ jobs:
       - run: mkdir -p web/data
       - run: cp -rf dist/* web/data
 
-      - name: 部署
+      - name: Advanced Debug Deploy
         run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.MYECS_DEPLOY_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          # 1. 准备 SSH 目录
+          mkdir -p ~/.ssh
           chmod 700 ~/.ssh
+          
+          # 2. 写入私钥 (请确保你的 Secret 变量名正确)
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -t rsa -p "${{ secrets.MYECS_ADD_PORT }}" "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
-
+          
+          # 3. 这里的端口和地址请换成你真实的内网穿透公网 IP/域名 和 端口
+          # 建议先扫描，如果扫描失败也不要让脚本停止
+          ssh-keyscan -t rsa -p ${{ secrets.REMOTE_PORT }} ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts || true
+      
+          # 4. 关键：测试 SSH 连通性 (不执行 push，只看能不能连上)
+          echo "Testing SSH Connection..."
+          ssh -v -o StrictHostKeyChecking=no -p ${{ secrets.REMOTE_PORT }} git@${{ secrets.REMOTE_HOST }} || echo "SSH Test failed but continuing..."
+      
+          # 5. Git 操作
           cd ./web
           git init
-          git config user.name "${{secrets.GIT_NAME}}"
-          git config user.email "${{secrets.GIT_EMAIL}}"
+          git config user.name "Auto Deploy"
+          git config user.email "deploy@example.com"
           git add .
-          git commit -m "Auto updated at `date +'%Y-%m-%d %H:%M:%S'`"
-          GIT_SSH_COMMAND="ssh -v" git push --force "${{secrets.MYECS_DEPLOY_ADD}}" master:master
+          
+          # 允许空提交，防止因为没有文件变化而报错导致脚本退出
+          git commit -m "Auto updated at $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+          
+          # 6. 执行推送，并强制显示所有调试信息
+          echo "Starting Git Push..."
+          export GIT_SSH_COMMAND="ssh -v -o StrictHostKeyChecking=no -p ${{ secrets.REMOTE_PORT }}"
+          git push --force "git@${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PATH }}" master:master
