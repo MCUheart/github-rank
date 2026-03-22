@@ -56,61 +56,29 @@ jobs:
     #       npm install
 
       - run: npm run get:trending
-      # - run: npm run get:repos
-      # - run: npm run get:users
-      # - run: npm run get:users:china
-      # - run: cat .cache/users.json
-      # - run: cat .cache/users.china.json
-      # - run: npm run get:users:info
+      - run: npm run get:repos
+      - run: npm run get:users
+      - run: npm run get:users:china
+      - run: cat .cache/users.json
+      - run: cat .cache/users.china.json
+      - run: npm run get:users:info
 
       - run: npm run start
       - run: mkdir -p web/data
       - run: cp -rf dist/* web/data
-      
-      - name: Advanced Debug Deploy (Corrected Secrets)
-        env:
-          # 将你的原始 Secret 映射到脚本变量
-          PORT: ${{ secrets.MYECS_ADD_PORT }}
-          HOST: ${{ secrets.MYECS_ADD }}
-          KEY: ${{ secrets.MYECS_DEPLOY_PRIVATE_KEY }}
-          PUSH_ADDR: ${{ secrets.MYECS_DEPLOY_ADD }}
-          GIT_NAME: ${{ secrets.GIT_NAME }}
-          GIT_EMAIL: ${{ secrets.GIT_EMAIL }}
-        run: |
-          # 1. 变量检查 (这是解决 Bad port 'git@' 的关键)
-          echo "--- 正在检查变量配置 ---"
-          if [ -z "$PORT" ]; then echo "❌ 错误: MYECS_ADD_PORT 为空"; else echo "✅ 端口已设置: $PORT"; fi
-          if [ -z "$HOST" ]; then echo "❌ 错误: MYECS_ADD 为空"; else echo "✅ 主机已设置: $HOST"; fi
-          if [ -z "$PUSH_ADDR" ]; then echo "❌ 错误: MYECS_DEPLOY_ADD 为空"; fi
 
-          # 2. 准备 SSH 环境
+      - name: 部署
+        run: |
           mkdir -p ~/.ssh/
-          echo "$KEY" > ~/.ssh/id_rsa
+          echo "${{ secrets.MYECS_DEPLOY_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           chmod 600 ~/.ssh/id_rsa
-          
-          # 3. 扫描主机指纹 (增加超时处理，防止这里卡死)
-          echo "--- 正在扫描主机指纹 ---"
-          ssh-keyscan -t rsa -p "$PORT" "$HOST" >> ~/.ssh/known_hosts || echo "⚠️ 指纹扫描失败，尝试继续..."
+          ssh-keyscan -t rsa -p "${{ secrets.MYECS_ADD_PORT }}" "${{ secrets.MYECS_ADD }}" >> ~/.ssh/known_hosts
 
-          # 4. 测试 SSH 基础连通性 (带详细调试日志)
-          echo "--- 正在测试 SSH 握手 ---"
-          ssh -v -o StrictHostKeyChecking=no -p "$PORT" git@$HOST -o "ConnectTimeout=10" || echo "⚠️ SSH 测试连接失败，可能由于内网穿透超时"
-
-          # 5. Git 初始化与提交
           cd ./web
           git init
-          git config user.name "$GIT_NAME"
-          git config user.email "$GIT_EMAIL"
+          git config user.name "${{secrets.GIT_NAME}}"
+          git config user.email "${{secrets.GIT_EMAIL}}"
           git add .
-          
-          # 即使没有改动也不报错退出
-          git commit -m "Auto updated at $(date +'%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
-          
-          # 6. 执行推送
-          echo "--- 开始执行 Git Push ---"
-          # 显式告诉 Git 使用哪个端口进行 SSH 连接
-          export GIT_SSH_COMMAND="ssh -v -o StrictHostKeyChecking=no -p $PORT"
-          
-          # 注意：这里使用了你原始的变量 PUSH_ADDR，如果这个变量本身包含端口信息，请确保它与上面一致
-          git push --force "$PUSH_ADDR" master:master
+          git commit -m "Auto updated at `date +'%Y-%m-%d %H:%M:%S'`"
+          git push --force --quiet "${{secrets.MYECS_DEPLOY_ADD}}" master:master
