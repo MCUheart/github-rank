@@ -56,12 +56,12 @@ jobs:
     #       npm install
 
       - run: npm run get:trending
-      - run: npm run get:repos
-      - run: npm run get:users
-      - run: npm run get:users:china
-      - run: cat .cache/users.json
-      - run: cat .cache/users.china.json
-      - run: npm run get:users:info
+      # - run: npm run get:repos
+      # - run: npm run get:users
+      # - run: npm run get:users:china
+      # - run: cat .cache/users.json
+      # - run: cat .cache/users.china.json
+      # - run: npm run get:users:info
 
       - run: npm run start
       - run: mkdir -p web/data
