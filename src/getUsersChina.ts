@@ -66,6 +66,8 @@ import { UsersDataBase } from './common/props.js';
     FS.outputFileSync(path.join(process.cwd(), '.cache', 'users.china.json'), JSON.stringify(result, null, 2));
     console.log(`-> 共获取\x1b[32;1m${result.length}\x1b[0m条用户数据！`);
   } catch (error) {
-    console.log(error);
+    // 让 GitHub Actions 在数据获取失败时停止，而不是在后续读取缓存时产生误导性错误。
+    console.error(error);
+    process.exitCode = 1;
   }
 })()

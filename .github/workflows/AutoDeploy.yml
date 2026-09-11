@@ -20,20 +20,26 @@ on:
 env: # 设置环境变量
   TZ: Asia/Shanghai # 时区（设置时区可使页面中的`最近更新时间`使用时区时间）
 
+# 让 github.token 具备仓库读取权限；它也会作为未配置 ACCESS_TOKEN 时的安全回退。
+permissions:
+  contents: read
+
 jobs:
   build-deploy:
     env: 
-      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      # GitHub Search API 在匿名状态下仅允许很少的请求。一次任务需要请求多个分页，
+      # 因此当自定义令牌不存在或失效时，使用 Actions 自动提供的短期令牌。
+      ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN || github.token }}
       ID: ${{ secrets.GITHUB_ID }}
       SECRET: ${{ secrets.GITHUB_SECRET }}
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
           registry-url: 'https://registry.npmjs.org'
 
       - run: npm install
@@ -59,8 +65,6 @@ jobs:
       - run: npm run get:repos
       - run: npm run get:users
       - run: npm run get:users:china
-      - run: cat .cache/users.json
-      - run: cat .cache/users.china.json
       - run: npm run get:users:info
 
       - run: npm run start
